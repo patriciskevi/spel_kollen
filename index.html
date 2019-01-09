@@ -4,48 +4,103 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>MyBookList App</title>
+    <title>Betting App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" media="screen" href="#" />
+    <!-- Font Awsome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
         crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://bootswatch.com/4/yeti/bootstrap.min.css" />
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Material icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Own styles -->
+    <link rel="stylesheet" type="text/css" media="screen" href="src/css/style.css" />
+
 </head>
 
 <body>
-    <div class="container mt-4">
-        <h1 class="display-4 text-center">
-            <i class="fas fa-book-open text-primary"></i> My<span class="text-primary">Book</span>List
-        </h1>
-        <form action="" id="book-form">
-            <div class="form-group">
-                <label for="title"></label>Title
-                <input type="text" name="" id="title" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="author"></label>Author
-                <input type="text" name="" id="author" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label for="isbn"></label>ISBN#
-                <input type="text" name="" id="isbn" class="form-control" />
-            </div>
-            <input type="submit" value="Add Book" class="btn btn-primary btn-block" />
-        </form>
-        <table class="table table-striped mt-5">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>ISBN#</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody id="book-list"></tbody>
-        </table>
-    </div>
+    <header>
+        <h1 class="title center-align teal lighten-2 grey-text text-darken-3">Spel Kollen</h1>
+    </header>
 
-    <script src="app.js"></script>
+    <!-- Section: Input -->
+    <section class="section input-section">
+        <div class="container insert">
+            <div class="row">
+                <form class="col s12" id="bet-form">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <input type="text" class="datepicker">
+                            <label for="id">Datum</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="name" type="text" class="validate">
+                            <label for="name">Namn</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="sum" type="text" class="validate">
+                            <label for="sum">Lagt spel</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input id="result" type="text" class="validate">
+                            <label for="result">Resultat</label>
+                        </div>
+                        <div class="center-align">
+                            <button class="btn waves-effect waves-light" type="submit" name="action">Lägg till
+                                spel
+                                <i class="material-icons right">send</i>
+                            </button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Table display -->
+    <section class="section">
+        <div class="container">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Namn</th>
+                        <th>Lagt spel</th>
+                        <th>Vinst</th>
+                        <th>Resultat</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bet-list"></tbody>
+            </table>
+
+
+            <div>
+                <input id="item" type="text">
+                <button class="btn waves-effect waves-light" onClick="add();" name="action">Add</button>
+            </div>
+            <div id="test"></div>
+
+
+        </div>
+    </section>
+
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="src/js/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Source Javascript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let elems = document.querySelectorAll('.datepicker');
+            let instances = M.Datepicker.init(elems, {
+                autoClose: true,
+                firstDay: 1
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -1,136 +1,192 @@
-// Book Class: Represents a Book
-class Book {
-    constructor(title, author, isbn) {
-        this.title = title;
-        this.author = author;
-        this.isbn = isbn;
+// Bet Class: Represents one Bet
+class Bet {
+    constructor(date, name, sum, result) {
+        this.date = date;
+        this.name = name;
+        this.sum = sum;
+        this.result = result;
     }
 }
 
 // UI Class: Handle the UI
 class UI {
-    static displayBooks() {
-        const books = Store.getBooks();
+    static displayBets() {
+        const bets = Store.getBets();
 
-        books.forEach(book => UI.addBookToList(book));
+        bets.forEach(bet => UI.addBetToList(bet));
     }
 
-    static addBookToList(book) {
-        const list = document.querySelector("#book-list");
 
-        const row = document.createElement("tr");
+
+    static addBetToList(bet) {
+        const list = document.querySelector('#bet-list');
+
+        const row = document.createElement('tr');
 
         row.innerHTML = `
-          <td>${book.title}</td>
-          <td>${book.author}</td>
-          <td>${book.isbn}</td>
-          <td><a href="#" class="btn btn-danger btn-sm delete"</a>X</td>
-      `;
+            <td>${bet.date}</td>
+            <td>${bet.name}</td>
+            <td>${bet.sum}</td>
+            <td>${bet.result}</td>
+            <td><a href="#" class="btn btn-small delete"</a>X</td>
+        `;
 
-        list.appendChild(row);
+        list.insertBefore(row, list.childNodes[0]);
+
+        M.updateTextFields();
     }
 
-    static deleteBook(el) {
-        if (el.classList.contains("delete")) {
+    static deleteBet(el) {
+        if (el.classList.contains('delete')) {
             el.parentElement.parentElement.remove();
         }
     }
 
     static showAlert(message, className) {
-        const div = document.createElement("div");
-        div.className = `alert alert-${className}`;
+        const div = document.createElement('div');
+        div.className = `alert  ${className}`;
         div.appendChild(document.createTextNode(message));
-        const container = document.querySelector(".container");
-        const form = document.querySelector("#book-form");
-        container.insertBefore(div, form);
-        // Vanish in 2 seconds
+        const section = document.querySelector('.input-section');
+        const insert = document.querySelector('.insert');
+        section.insertBefore(div, insert);
+
+        // Disepears after 2 seconds
         setTimeout(() => {
-            document.querySelector(".alert").remove();
+            document.querySelector('.alert').remove();
         }, 2000);
     }
 
     static clearFields() {
-        document.querySelector("#title").value = "";
-        document.querySelector("#author").value = "";
-        document.querySelector("#isbn").value = "";
+        document.querySelector('.datepicker').value = '';
+        document.querySelector('#name').value = '';
+        document.querySelector('#sum').value = '';
+        document.querySelector('#result').value = '';
     }
 }
 
 // Store Class: Handles the Storage
 class Store {
-    static getBooks() {
-        let books;
-        if (localStorage.getItem("books") === null) {
-            books = [];
+    static getBets() {
+        let bets;
+        if (localStorage.getItem('bets') === null) {
+            bets = [];
         } else {
-            books = JSON.parse(localStorage.getItem("books"));
+            bets = JSON.parse(localStorage.getItem('bets'));
         }
 
-        return books;
+        return bets;
     }
 
-    static addBook(book) {
-        const books = Store.getBooks();
-        books.push(book);
-        localStorage.setItem("books", JSON.stringify(books));
+    static addBet(bet) {
+        const bets = Store.getBets();
+        bets.push(bet);
+        localStorage.setItem('bets', JSON.stringify(bets));
     }
 
-    static removeBook(isbn) {
-        const books = Store.getBooks();
+    static removeBet(date) {
+        const bets = Store.getBets();
 
-        books.forEach((book, index) => {
-            if (book.isbn === isbn) {
-                books.splice(index, 1);
+        bets.forEach((bet, index) => {
+            if (bet.date === date) {
+                bets.splice(index, 1);
             }
         });
 
-        localStorage.setItem("books", JSON.stringify(books));
+        localStorage.setItem('bets', JSON.stringify(bets));
     }
 }
 
-// Event: Display Books
-document.addEventListener("DOMContentLoaded", UI.displayBooks);
+// Event: Display Bets
+document.addEventListener('DOMContentLoaded', UI.displayBets);
 
-// Event: Add a Book
-document.querySelector("#book-form").addEventListener("submit", e => {
+// Event: Add a bet
+document.querySelector('#bet-form').addEventListener('submit', e => {
     // Prevent actual submit
     e.preventDefault();
 
-    // Get form values
-    const title = document.querySelector("#title").value;
-    const author = document.querySelector("#author").value;
-    const isbn = document.querySelector("#isbn").value;
+    // Get form valus
+    const date = document.querySelector('.datepicker').value;
+    const name = document.querySelector('#name').value;
+    const sum = document.querySelector('#sum').value;
+    let result = document.querySelector('#result').value;
 
     // Validate
-    if (title === "" || author === "" || isbn === "") {
-        //Show danger message
-        UI.showAlert("Please fill in all fields", "danger");
+    if (date === '' || name === '' || sum === '') {
+        // Show error message
+        alert('Fyll i fälten');
+
+        //UI.showAlert('Fyll i fälten');
     } else {
-        // Instatiate Book
-        const book = new Book(title, author, isbn);
+        if (result === '' || result == 0) {
+            result = 0;
+        } else {
+            result = result - sum;
+        }
 
-        // Add Book to UI
-        UI.addBookToList(book);
+        // Instantiate Bet
+        const bet = new Bet(date, name, sum, result);
 
-        // Add book to store
-        Store.addBook(book);
+        // Add bet to UI
+        UI.addBetToList(bet);
+
+        // Add bet to store
+        Store.addBet(bet);
 
         // Show success message
-        UI.showAlert("Book Added", "success");
+        UI.showAlert('Spel tillagt', 'btn');
 
         // Clear fields on submit
         UI.clearFields();
     }
 });
 
-// Event: Remove a Book
-document.querySelector("#book-list").addEventListener("click", e => {
-    // Remove book from UI
-    UI.deleteBook(e.target);
+// Event: Remove a bet
+document.querySelector('#bet-list').addEventListener('click', e => {
+    // Remove bet from UI
+    UI.deleteBet(e.target);
 
-    // Remove book from store
-    Store.removeBook(e.target.parentElement.previousElementSibling.textContent);
+
+    //Remove bet from store
+    Store.removeBet(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
 
     // Show success message
-    UI.showAlert("Book Removed", "success");
+    UI.showAlert('Spel borttaget', 'red btn');
 });
+
+
+
+
+
+// Could be localStorage.
+let items = [];
+
+function add() {
+    const item = document.querySelector('#item');
+    items.push(item.value);
+
+    // Clear input.
+    item.value = '';
+
+    // Re-render after each add.
+    render();
+}
+
+function deleteTheShit(id) {
+    items = items.slice(0, 1);
+
+    render();
+}
+
+function render() {
+    const list = document.querySelector('#test');
+    list.innerHTML = '<ul>' + items.reverse().reduce(
+        (content, item) => content + `<li>${item}</li><button class="btn waves-effect waves-light" onClick="deleteTheShit();" name="action">delete</button>`
+    ) + '</ul>';
+}
+
+static render() {
+    const list = document.querySelector('#bet-list');
+    list.innerHTML = '<ul>' + items.reverse().reduce(
+        (content, item) => content + `<li>${item}</li> onClick="deleteTheShit();" name="action">delete</button>`
+    ) + '</ul>';
+}
