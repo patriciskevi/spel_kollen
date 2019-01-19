@@ -11,12 +11,36 @@ class Bet {
 // UI Class: Handle the UI
 class UI {
     static displayBets() {
-        const bets = Store.getBets();
-
-        bets.forEach(bet => UI.addBetToList(bet));
+        Store.getBets().forEach(bet => UI.addBetToList(bet));
+        UI.renderTotalList();
     }
 
+    static renderTotalList() {
+        let players = [];
+        for (let bet of Store.getBets()) {
+            const player = players.find(player => player.name === bet.name);
+            if (!player) {
+                players.push(bet);
+            } else {
+                player.win = parseInt(player.win) + parseInt(bet.win);
+                player.sum = parseInt(player.sum) + parseInt(bet.sum);
+            }
+        }
 
+        let list = document.querySelector('#total-list');
+        const tbody = document.createElement('tbody');
+        players.forEach(player => {
+            const row = tbody.insertRow(0);
+            row.innerHTML = `
+                <td>${player.name}</td>
+                <td>${player.sum}</td>
+                <td>${player.win - player.sum}</td>
+
+            `;
+            console.log(`${player.name} sum: ${player.win - player.sum} kr`);
+        });
+        list.innerHTML = tbody.innerHTML;
+    }
 
     static addBetToList(bet) {
         const list = document.querySelector('#bet-list');
@@ -29,16 +53,22 @@ class UI {
             <td>${bet.sum}</td>
             <td>${bet.win}</td>
             <td>${bet.win - bet.sum}</td>
-            <td><a href="#" class="btn btn-small delete"</a>X</td>
+
+            <td><a href="#" class="btn btn-small delete" id="${bet.id}"</a>X</td>
         `;
 
+        console.log(list.childNodes.length)
         list.insertBefore(row, list.childNodes[0]);
 
-        M.updateTextFields();
+
     }
 
     static deleteBet(el) {
+        const list = document.querySelector('#bet-list');
+        console.log(list)
+
         if (el.classList.contains('delete')) {
+            console.log(el.parentElement.parentElement);
             el.parentElement.parentElement.remove();
         }
     }
@@ -80,25 +110,28 @@ class Store {
 
     static addBet(bet) {
         const bets = Store.getBets();
+        bet = {
+            date: bet.date,
+            name: bet.name,
+            win: bet.win,
+            sum: bet.sum,
+            id: bets.length
+        }
         bets.push(bet);
         localStorage.setItem('bets', JSON.stringify(bets));
+        return bet;
     }
 
-    static removeBet(date) {
-        const bets = Store.getBets();
-
-        bets.forEach((bet, index) => {
-            if (bet.date === date) {
-                bets.splice(index, 1);
-            }
-        });
-
-        localStorage.setItem('bets', JSON.stringify(bets));
+    static removeBet(id) {
+        localStorage.setItem('bets', JSON.stringify(
+            Store.getBets().filter((bet) => bet.id != id)
+        ));
     }
 }
 
 // Event: Display Bets
 document.addEventListener('DOMContentLoaded', UI.displayBets);
+
 
 // Event: Add a bet
 document.querySelector('#bet-form').addEventListener('submit', e => {
@@ -123,13 +156,15 @@ document.querySelector('#bet-form').addEventListener('submit', e => {
         }
 
         // Instantiate Bet
-        const bet = new Bet(date, name, sum, win);
+        let bet = new Bet(date, name, sum, win);
+
+        // Add bet to store
+        bet = Store.addBet(bet);
 
         // Add bet to UI
         UI.addBetToList(bet);
 
-        // Add bet to store
-        Store.addBet(bet);
+        UI.renderTotalList();
 
         // Show success message
         UI.showAlert('Spel tillagt', 'btn');
@@ -146,8 +181,9 @@ document.querySelector('#bet-list').addEventListener('click', e => {
 
 
     //Remove bet from store
-    Store.removeBet(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent);
+    Store.removeBet(e.target.id);
 
+    UI.renderTotalList();
     // Show success message
     UI.showAlert('Spel borttaget', 'red btn');
 });

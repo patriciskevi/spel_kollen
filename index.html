@@ -65,42 +65,55 @@
             <table class="striped">
                 <thead>
                     <tr>
-                        <th>Datum</th>
-                        <th>Namn</th>
+                        <th>Spelare</th>
                         <th>Spelad summa</th>
-                        <th>Vinst</th>
-                        <th>Resultat</th>
-                        <th></th>
+                        <th>Ackumulerad vinst</th>
                     </tr>
                 </thead>
-                <tbody id="bet-list"></tbody>
+                <tbody id="total-list"></tbody>
             </table>
+            <section class="section">
+                <div class="container">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Datum</th>
+                                <th>Namn</th>
+                                <th>Spelad summa</th>
+                                <th>Vinst</th>
+                                <th>Resultat</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="bet-list"></tbody>
+                    </table>
 
 
-            <!-- <div>
+                    <!-- <div>
+
                 <input id="item" type="text">
                 <button class="btn waves-effect waves-light" onClick="add();" name="action">Add</button>
             </div>
             <div id="test"></div> -->
 
 
-        </div>
-    </section>
+                </div>
+            </section>
 
 
-    <!-- Compiled and minified JavaScript -->
-    <script src="src/js/app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <!-- Source Javascript -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let elems = document.querySelectorAll('.datepicker');
-            let instances = M.Datepicker.init(elems, {
-                autoClose: true,
-                firstDay: 1
-            });
-        });
-    </script>
+            <!-- Compiled and minified JavaScript -->
+            <script src="src/js/app.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            <!-- Source Javascript -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    let elems = document.querySelectorAll('.datepicker');
+                    let instances = M.Datepicker.init(elems, {
+                        autoClose: true,
+                        firstDay: 1
+                    });
+                });
+            </script>
 </body>
 
 </html>
