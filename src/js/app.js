@@ -1,10 +1,10 @@
 // Bet Class: Represents one Bet
 class Bet {
-    constructor(date, name, sum, result) {
+    constructor(date, name, sum, win) {
         this.date = date;
         this.name = name;
         this.sum = sum;
-        this.result = result;
+        this.win = win;
     }
 }
 
@@ -27,7 +27,8 @@ class UI {
             <td>${bet.date}</td>
             <td>${bet.name}</td>
             <td>${bet.sum}</td>
-            <td>${bet.result}</td>
+            <td>${bet.win}</td>
+            <td>${bet.win - bet.sum}</td>
             <td><a href="#" class="btn btn-small delete"</a>X</td>
         `;
 
@@ -60,7 +61,7 @@ class UI {
         document.querySelector('.datepicker').value = '';
         document.querySelector('#name').value = '';
         document.querySelector('#sum').value = '';
-        document.querySelector('#result').value = '';
+        document.querySelector('#win').value = '';
     }
 }
 
@@ -108,7 +109,7 @@ document.querySelector('#bet-form').addEventListener('submit', e => {
     const date = document.querySelector('.datepicker').value;
     const name = document.querySelector('#name').value;
     const sum = document.querySelector('#sum').value;
-    let result = document.querySelector('#result').value;
+    let win = document.querySelector('#win').value;
 
     // Validate
     if (date === '' || name === '' || sum === '') {
@@ -117,14 +118,12 @@ document.querySelector('#bet-form').addEventListener('submit', e => {
 
         //UI.showAlert('Fyll i fälten');
     } else {
-        if (result === '' || result == 0) {
-            result = 0;
-        } else {
-            result = result - sum;
+        if (win === '' || win == 0) {
+            win = 0;
         }
 
         // Instantiate Bet
-        const bet = new Bet(date, name, sum, result);
+        const bet = new Bet(date, name, sum, win);
 
         // Add bet to UI
         UI.addBetToList(bet);
@@ -158,35 +157,35 @@ document.querySelector('#bet-list').addEventListener('click', e => {
 
 
 // Could be localStorage.
-let items = [];
+// let items = [];
 
-function add() {
-    const item = document.querySelector('#item');
-    items.push(item.value);
+// function add() {
+//     const item = document.querySelector('#item');
+//     items.push(item.value);
 
-    // Clear input.
-    item.value = '';
+//     // Clear input.
+//     item.value = '';
 
-    // Re-render after each add.
-    render();
-}
+//     // Re-render after each add.
+//     render();
+// }
 
-function deleteTheShit(id) {
-    items = items.slice(0, 1);
+// function deleteTheShit(id) {
+//     items = items.slice(0, 1);
 
-    render();
-}
+//     render();
+// }
 
-function render() {
-    const list = document.querySelector('#test');
-    list.innerHTML = '<ul>' + items.reverse().reduce(
-        (content, item) => content + `<li>${item}</li><button class="btn waves-effect waves-light" onClick="deleteTheShit();" name="action">delete</button>`
-    ) + '</ul>';
-}
+// function render() {
+//     const list = document.querySelector('#test');
+//     list.innerHTML = '<ul>' + items.reverse().reduce(
+//         (content, item) => content + `<li>${item}</li><button class="btn waves-effect waves-light" onClick="deleteTheShit();" name="action">delete</button>`
+//     ) + '</ul>';
+// }
 
-static render() {
-    const list = document.querySelector('#bet-list');
-    list.innerHTML = '<ul>' + items.reverse().reduce(
-        (content, item) => content + `<li>${item}</li> onClick="deleteTheShit();" name="action">delete</button>`
-    ) + '</ul>';
-}
+// static render() {
+//     const list = document.querySelector('#bet-list');
+//     list.innerHTML = '<ul>' + items.reverse().reduce(
+//         (content, item) => content + `<li>${item}</li> onClick="deleteTheShit();" name="action">delete</button>`
+//     ) + '</ul>';
+// }
