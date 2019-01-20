@@ -33,7 +33,7 @@
                 <form class="col s12" id="bet-form">
                     <div class="row">
                         <div class="input-field col s12">
-                            <input type="text" class="datepicker">
+                            <input type="text" class="datepicker" id="date">
                             <label for="id">Datum</label>
                         </div>
                         <div class="input-field col s12">
@@ -58,7 +58,7 @@
                     </div>
                 </form>
                 <div class="center-align">
-                    <button class="btn waves-effect waves-light cyan" id="saveButton" onclick="saveData();">Spara data
+                    <button class="btn waves-effect waves-light cyan" id="saveButton">Spara data
                         <i class="material-icons right">file_download</i>
                     </button>
                 </div>
@@ -77,26 +77,29 @@
                         <th>Ackumulerat resultat</th>
                     </tr>
                 </thead>
-                <tbody id="total-list"></tbody>
+                <tbody id="total-bets"></tbody>
             </table>
-            <section class="section">
-                <div class="container">
-                    <table class="striped">
-                        <thead>
-                            <tr>
-                                <th>Datum</th>
-                                <th>Namn</th>
-                                <th>Spelad summa</th>
-                                <th>Vinst</th>
-                                <th>Resultat</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="bet-list"></tbody>
-                    </table>
+        </div>
+    </section>
 
-
-                    <!-- <div>
+    <section class="section">
+        <div class="container">
+            <table class="striped">
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Namn</th>
+                        <th>Spelad summa</th>
+                        <th>Vinst</th>
+                        <th>Resultat</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="bets"></tbody>
+            </table>
+        </div>
+    </section>
+    <!-- <div>
 
                 <input id="item" type="text">
                 <button class="btn waves-effect waves-light" onClick="add();" name="action">Add</button>
@@ -104,24 +107,23 @@
             <div id="test"></div> -->
 
 
-                </div>
-            </section>
 
 
-            <!-- Compiled and minified JavaScript -->
-            <script src="src/js/FileSaver.js"></script>
-            <script src="src/js/app.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-            <!-- Source Javascript -->
-            <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    let elems = document.querySelectorAll('.datepicker');
-                    let instances = M.Datepicker.init(elems, {
-                        autoClose: true,
-                        firstDay: 1
-                    });
-                });
-            </script>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="src/js/FileSaver.js"></script>
+    <script src="src/js/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Source Javascript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let elems = document.querySelectorAll('.datepicker');
+            let instances = M.Datepicker.init(elems, {
+                autoClose: true,
+                firstDay: 1
+            });
+        });
+    </script>
 </body>
 
 </html>
