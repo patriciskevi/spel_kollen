@@ -49,12 +49,19 @@
                             <label for="win">Vinst</label>
                         </div>
                         <div class="center-align">
-                            <button class="btn waves-effect waves-light" type="submit" name="action">Lägg till
+                            <button class="btn waves-effect waves-light materialize-red" type="submit" name="action">Lägg
+                                till
                                 spel
                                 <i class="material-icons right">send</i>
                             </button>
                         </div>
+                    </div>
                 </form>
+                <div class="center-align">
+                    <button class="btn waves-effect waves-light cyan" id="saveButton" onclick="saveData();">Spara data
+                        <i class="material-icons right">file_download</i>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
@@ -67,7 +74,7 @@
                     <tr>
                         <th>Spelare</th>
                         <th>Spelad summa</th>
-                        <th>Ackumulerad vinst</th>
+                        <th>Ackumulerat resultat</th>
                     </tr>
                 </thead>
                 <tbody id="total-list"></tbody>
@@ -102,6 +109,7 @@
 
 
             <!-- Compiled and minified JavaScript -->
+            <script src="src/js/FileSaver.js"></script>
             <script src="src/js/app.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
             <!-- Source Javascript -->

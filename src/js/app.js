@@ -37,7 +37,7 @@ class UI {
                 <td>${player.win - player.sum}</td>
 
             `;
-            console.log(`${player.name} sum: ${player.win - player.sum} kr`);
+            // console.log(`${player.name} sum: ${player.win - player.sum} kr`);
         });
         list.innerHTML = tbody.innerHTML;
     }
@@ -54,22 +54,15 @@ class UI {
             <td>${bet.win}</td>
             <td>${bet.win - bet.sum}</td>
 
-            <td><a href="#" class="btn btn-small delete" id="${bet.id}"</a>X</td>
+            <td><a href="#" class="btn btn-small delete" id="${bet.id}"><i class="material-icons">delete_forever</i></a></td>
         `;
 
-        console.log(list.childNodes.length)
         list.insertBefore(row, list.childNodes[0]);
-
-
     }
 
     static deleteBet(el) {
-        const list = document.querySelector('#bet-list');
-        console.log(list)
-
-        if (el.classList.contains('delete')) {
-            console.log(el.parentElement.parentElement);
-            el.parentElement.parentElement.remove();
+        if (el.parentElement.classList.contains('delete')) {
+            el.parentElement.parentElement.parentElement.remove();
         }
     }
 
@@ -124,9 +117,26 @@ class Store {
 
     static removeBet(id) {
         localStorage.setItem('bets', JSON.stringify(
-            Store.getBets().filter((bet) => bet.id != id)
+            Store.getBets().filter((bet) => {
+                console.log('to remove: ' + id + 'bet.id: ' + bet.id);
+
+                return bet.id != id
+            })
         ));
     }
+}
+
+function saveData() {
+    const saveData = document.querySelector('#saveButton');
+
+    saveData.addEventListener('click', function () {
+        let date = new Date();
+        let blob = new Blob([localStorage.getItem('bets')], {
+            type: 'text/plain; charset=utf-8'
+        });
+        saveAs(blob, `spel_kollen_
+            ${date.getFullYear()}-${date.getMonth()}-${date.getDate()}.txt`);
+    });
 }
 
 // Event: Display Bets
@@ -176,14 +186,17 @@ document.querySelector('#bet-form').addEventListener('submit', e => {
 
 // Event: Remove a bet
 document.querySelector('#bet-list').addEventListener('click', e => {
+
     // Remove bet from UI
     UI.deleteBet(e.target);
 
 
+    console.log(e.target.parentElement.id);
     //Remove bet from store
-    Store.removeBet(e.target.id);
+    Store.removeBet(e.target.parentElement.id);
 
     UI.renderTotalList();
+
     // Show success message
     UI.showAlert('Spel borttaget', 'red btn');
 });
